@@ -10,12 +10,12 @@ function getDirectoryContents(files, currentDir, query) {
       name: file,
       isDirectory: false,
       path: path.join(query, file),
-      currentDir,
     };
     if (isDirectory(currentDir, file)) {
       newObj.isDirectory = true;
       data.push(newObj);
     } else {
+      newObj.currentDir = currentDir;
       data.push(newObj);
     }
     return data;
