@@ -29,7 +29,7 @@ function isDirectory(currentDir, file) {
 
 function readDir(currentDir, res, query) {
   fs.readdir(currentDir, (err, files) => {
-    const directoryContents = [];
+    let directoryContents = [];
 
     if (!err) {
       directoryContents = getDirectoryContents(files, currentDir, query);
@@ -41,7 +41,9 @@ function readDir(currentDir, res, query) {
 
 exports.get = (req, res) => {
   const query = req.query.path || "";
-  const currentDir = dir;
+  let currentDir = dir;
+
+  if (query) currentDir = path.join(currentDir, query);
 
   readDir(currentDir, res, query);
 };
