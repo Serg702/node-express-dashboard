@@ -4,22 +4,23 @@ const dir = process.cwd();
 
 function getDirectoryContents(files, currentDir, query) {
   const data = [];
-
   files.forEach((file) => {
-    const newObj = {
-      name: file,
-      isDirectory: false,
-      path: path.join(query, file),
-    };
     if (isDirectory(currentDir, file)) {
-      newObj.isDirectory = true;
-      data.push(newObj);
+      data.push({
+        name: file,
+        isDirectory: true,
+        path: path.join(query, file),
+      });
     } else {
-      newObj.currentDir = currentDir;
-      data.push(newObj);
+      data.push({
+        name: file,
+        isDirectory: false,
+        path: path.join(query, file),
+        currentDir,
+      });
     }
-    return data;
   });
+  return data;
 }
 
 function isDirectory(currentDir, file) {
