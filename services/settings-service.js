@@ -1,11 +1,18 @@
 const fs = require("fs");
 const path = require("path");
-const settingsFilePath = path.join(__dirname, "json/settings.json");
+const settingsFilePath = path.join(
+  __dirname.replace("services", ""),
+  "json/settings.json"
+);
 
 function getSettings() {
-  const settingsData = fs.readFileSync(settingsFilePath);
+  try {
+    const settingsData = fs.readFileSync(settingsFilePath);
 
-  return JSON.parse(settingsData);
+    return JSON.parse(settingsData);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function writeSettings(newSettings) {
@@ -19,7 +26,13 @@ function writeSettings(newSettings) {
   }
 }
 
-function getDefaultDir() {}
+function getDefaultDir() {
+  const defaultDir = getSettings().defaultDir;
+
+  if (!defaultDir || !isValidDir(defaultDir)) return process.cwd;
+
+  return defaultDir;
+}
 
 function isValidDir(dirPath) {
   try {
